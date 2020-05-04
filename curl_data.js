@@ -18,7 +18,7 @@ function curlData(url,arg)
 
 	var documentsPath = "~/Documents/";
 	var resourcePath = documentsPath + "curl_script_resources/";
-	
+
 	var localDataFile = File(documentsPath + "curlData/curlData.txt");
 	var executor = File(resourcePath + "/curl_from_illustrator.app");
 	var killExecutor = File(resourcePath + "/kill_curl_from_illustrator.app");
@@ -57,21 +57,9 @@ function curlData(url,arg)
 
 	//try to read the data
 	var curTries = 0;
-	var maxTries;
-	var delay;
+	var maxTries = 101;
+	var delay 100;
 
-	//if the user is in the DR, set a long timeout
-	//otherwise keep it short
-	if(DR_USERS.indexOf(user)>-1)
-	{
-		maxTries = 600;
-		delay = 200
-	}
-	else
-	{
-		maxTries = 101;
-		delay = 100;
-	}
 	var parsedJSON;
 	var htmlRegex = /<html>/gmi;
 
@@ -86,12 +74,11 @@ function curlData(url,arg)
 			{
 				if(curTries === 50)
 				{
+					//executor probably hanging.. kill it and try again.
 					killExecutor.execute();
-					// $.sleep(delay);
 				}
 
 				executor.execute();
-				// $.sleep(delay);
 			}
 			catch(e)
 			{
